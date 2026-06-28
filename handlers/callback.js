@@ -123,9 +123,9 @@ function registerCallbackHandler() {
                 const count = await getProductsInCategory(cat.name);
                 if (count === 0) {
                     await db.collection('categories').doc(String(id)).delete();
-                    bot.editMessageText(`✅ "${cat.name}" o'chirildi.`, { chat_id: chatId, message_id: messageId });
+                    bot.editMessageText(`✅ "${getLocalName(cat.name)}" o'chirildi.`, { chat_id: chatId, message_id: messageId });
                 } else {
-                    bot.editMessageText(`⚠️ "${cat.name}" ichida ${count} ta mahsulot bor. Avval ularni boshqa kategoriyaga o'tkazing yoki o'chiring.`, { chat_id: chatId, message_id: messageId });
+                    bot.editMessageText(`⚠️ "${getLocalName(cat.name)}" ichida ${count} ta mahsulot bor. Avval ularni boshqa kategoriyaga o'tkazing yoki o'chiring.`, { chat_id: chatId, message_id: messageId });
                 }
                 bot.answerCallbackQuery(cq.id);
             } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
@@ -189,7 +189,7 @@ function registerCallbackHandler() {
                 bot.sendMessage(chatId, 'Yangi rasm yuboring:', mainBackKeyboard);
             } else {
                 userState[chatId] = { step: 'update_value', data: { productId: id, field: fieldType, ...preserve }, steps: cur.steps || [] };
-                const labelMap = { price: "Narx (so'm)", discount: 'Chegirma (%)', stock: 'Korxobada nechta', warehouseCount: "Korxoba sig'imi (ombor)" };
+                const labelMap = { price: "Narx (so'm)", priceUSD: "Narx (USD)", discount: 'Chegirma (%)', stock: 'Korxobada nechta', warehouseCount: "Korxoba sig'imi (ombor)" };
                 bot.sendMessage(chatId, `${labelMap[fieldType] || fieldType} uchun yangi qiymatni yuboring:`, backKeyboard);
             }
             bot.answerCallbackQuery(cq.id); return;
@@ -202,7 +202,7 @@ function registerCallbackHandler() {
                 if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
                 const p = doc.data();
                 await db.collection('products').doc(String(id)).delete();
-                bot.editMessageText(`✅ "${p.name}" o'chirildi.`, { chat_id: chatId, message_id: messageId });
+                bot.editMessageText(`✅ "${getLocalName(p.name)}" o'chirildi.`, { chat_id: chatId, message_id: messageId });
                 bot.answerCallbackQuery(cq.id);
             } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
             return;

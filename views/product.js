@@ -20,6 +20,7 @@ async function showProductView(chatId, productId, messageId) {
                 inline_keyboard: [
                     [{ text: `Nomi: ${productName}`, callback_data: `update_field_name_${productId}` }],
                     [{ text: `Narx: ${(p.price || 0).toLocaleString('uz-UZ')} so'm`, callback_data: `update_field_price_${productId}` }],
+                    [{ text: `Narx (USD): $${(p.priceUSD || 0).toFixed(2)}`, callback_data: `update_field_priceUSD_${productId}` }],
                     [{ text: `Chegirma: ${p.discount || 0}%`, callback_data: `update_field_discount_${productId}` }],
                     [{ text: `📅 Chegirma boshlanishi: ${startDateText}`, callback_data: `update_field_discountStart_${productId}` }],
                     [{ text: `📅 Chegirma tugashi: ${endDateText}`, callback_data: `update_field_discountEnd_${productId}` }],
@@ -34,7 +35,7 @@ async function showProductView(chatId, productId, messageId) {
         };
         const message =
             `📝 Mahsulot: ${productName} (ID: ${productId})\n` +
-            `• Narx: ${(p.price || 0).toLocaleString('uz-UZ')} so'm\n` +
+            `• Narx: ${(p.price || 0).toLocaleString('uz-UZ')} so'm ($${(p.priceUSD || 0).toFixed(2)})\n` +
             `• Chegirma: ${p.discount || 0}%\n` +
             `• Chegirma boshlanishi: ${startDateText}\n` +
             `• Chegirma tugashi: ${endDateText}\n` +
